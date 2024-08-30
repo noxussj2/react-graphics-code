@@ -37,7 +37,7 @@ span {
 }
 
 body {
-    font-family: "PingFang SC", "Microsoft YaHei", "Arial Regular" !important;
+    font-family: 'PingFang SC', 'Microsoft YaHei', 'Arial Regular' !important;
 }
 
 // 滚动条样式
@@ -64,4 +64,16 @@ body {
             background: rgb(61 87 179 / 60%);
         }
     }
+}
+
+* {
+    user-select: none; /* Standard syntax */
+    -webkit-user-select: none; /* Chrome, Safari, Opera */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer and Edge */
+}
+
+img {
+    -webkit-user-drag: none;
+    user-drag: none;
 }
