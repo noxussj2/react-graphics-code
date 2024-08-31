@@ -4,6 +4,7 @@ import iconArrow from './assets/icon-arrow.png'
 import iconClose from './assets/icon-close.png'
 import iconRefresh from './assets/icon-refresh.png'
 import iconLogo from './assets/icon-logo.png'
+import logo from './assets/logo.png'
 import { IGetCaptcha, IValidateCaptcha } from './api'
 
 /**
@@ -31,7 +32,7 @@ function FailTip() {
 /**
  * 请拖动滑块完成拼图
  */
-function App() {
+function Puzzle({ onClose, showModel, modelClass }: any) {
     const [shape, setShape] = useState('')
     const [background, setBackground] = useState('')
     const [sliderLeft, setSliderLeft] = useState(0)
@@ -60,6 +61,12 @@ function App() {
 
         if (res.code === 401) {
             setSliderLeft(0)
+        }
+
+        if (res.code === 200) {
+            setTimeout(() => {
+                onClose()
+            }, 2000)
         }
     }
 
@@ -92,39 +99,92 @@ function App() {
     }
 
     // Handle the mouse up event
-
     return (
         <>
-            <div className="code-card">
-                <h3>请拖动滑块完成拼图</h3>
+            <div className={`code-card ${modelClass}`} onClick={(e) => e.stopPropagation()}>
+                {showModel && <h3 className="animate__animated animate__fadeIn">请拖动滑块完成拼图</h3>}
 
-                <div className="card__image">
-                    {code === 200 ? <SuccessTip second={second} /> : ''}
-                    {code === 401 ? <FailTip /> : ''}
-                    {background ? <img src={background} alt="" /> : ''}
-                    {shape ? <img src={shape} alt="" className="image__shape" style={{ top: `${sliderTop}px`, transform: `translateX(${sliderLeft}px)` }} /> : ''}
-                </div>
-
-                <div className="card__process">
-                    <div className="process__bar"></div>
-
-                    <div className="process__slider" style={{ transform: `translateX(${sliderLeft}px)` }} onMouseDown={onMouseDown}>
-                        <img src={iconArrow} alt="" />
+                {showModel && (
+                    <div className="card__image animate__slideInZoom">
+                        {code === 200 ? <SuccessTip second={second} /> : ''}
+                        {code === 401 ? <FailTip /> : ''}
+                        {background ? <img src={background} alt="" /> : ''}
+                        {shape ? <img src={shape} alt="" className="image__shape" style={{ top: `${sliderTop}px`, transform: `translateX(${sliderLeft}px)` }} /> : ''}
                     </div>
-                </div>
+                )}
 
-                <footer>
-                    <img src={iconClose} alt="" />
+                {showModel && (
+                    <div className="card__process animate__slideInZoom">
+                        <div className="process__bar"></div>
 
-                    <img src={iconRefresh} alt="" style={{ marginLeft: '15px' }} />
+                        <div className="process__slider" style={{ transform: `translateX(${sliderLeft}px)` }} onMouseDown={onMouseDown}>
+                            <img src={iconArrow} alt="" />
+                        </div>
+                    </div>
+                )}
 
-                    <p />
+                {showModel && (
+                    <footer>
+                        <img src={iconClose} alt="" />
 
-                    <img src={iconLogo} alt="" style={{ width: '89px' }} />
-                </footer>
+                        <img src={iconRefresh} alt="" style={{ marginLeft: '15px' }} />
+
+                        <p />
+
+                        <img src={iconLogo} alt="" style={{ width: '89px' }} />
+                    </footer>
+                )}
             </div>
         </>
     )
 }
 
-export default App
+/**
+ * 点击按钮开始验证
+ */
+function ValidateButton() {
+    const [show, setShow] = useState(false)
+    const [showModel, setShowModel] = useState(false)
+    const [modelClass, setModelClass] = useState('')
+
+    const openModal = () => {
+        setShow(true)
+        setModelClass('puzzleIn')
+
+        setTimeout(() => {
+            setShowModel(true)
+        }, 300)
+    }
+
+    const closeModal = () => {
+        setShowModel(false)
+        setModelClass('puzzleOut')
+
+        setTimeout(() => {
+            setShow(false)
+        }, 300)
+    }
+
+    return (
+        <>
+            <div className="validate-button--wrap">
+                <div className="validate-button" onClick={openModal}>
+                    <figure />
+
+                    <span>点击按钮开始验证</span>
+
+                    <img src={logo} alt="" />
+                </div>
+
+                {show && (
+                    <>
+                        <div className="puzzle-popup" onClick={closeModal} />
+                        <Puzzle onClose={closeModal} showModel={showModel} modelClass={modelClass} />
+                    </>
+                )}
+            </div>
+        </>
+    )
+}
+
+export default ValidateButton
