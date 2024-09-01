@@ -74,7 +74,8 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
     const onMouseDown = (e: any) => {
         e.preventDefault()
         const clientX = e.clientX
-        const start = performance.now()
+        const start = new Date().getTime()
+        console.log(start)
 
         const handleMouseMove = (e: MouseEvent) => {
             // Calculate the distance of the mouse moving
@@ -88,7 +89,8 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
         }
 
         const handleMouseUp = (e: any) => {
-            setSecond((performance.now() - start) / 1000)
+            console.log(new Date().getTime())
+            setSecond((new Date().getTime() - start) / 1000)
             window.removeEventListener('mousemove', handleMouseMove)
             window.removeEventListener('mouseup', handleMouseUp)
             validateCaptcha()
