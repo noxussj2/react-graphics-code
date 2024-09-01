@@ -23,16 +23,17 @@
                     'M4 24V12H13V10C13 6.68629 15.6863 4 19 4C22.3137 4 25 6.68629 25 10V12H34V24H38C41.3137 24 44 26.6863 44 30C44 33.3137 41.3137 36 38 36H34V44H4V36H8C11.3137 36 14 33.3137 14 30C14 26.6863 11.3137 24 8 24H4Z'
                 )
 
+                // 随机生成位置
                 const x = 0
                 const y = 0
 
-                // 绘制 canvas1
+                // 绘制背景
                 ctx.drawImage(image, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height)
                 ctx.translate(x, y)
                 ctx.clip(svgPath)
                 ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-                // 绘制 canvas2
+                // 绘制拼图
                 ctx2.clip(svgPath)
                 ctx2.clearRect(0, 0, canvas.width, canvas.height)
                 ctx2.drawImage(image, x, y, canvas.width - x, canvas.height - y, 0, 0, canvas.width - x, canvas.height - y) // 裁剪位置、绘制位置
