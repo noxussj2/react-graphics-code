@@ -4,10 +4,17 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Canvas Path2D Example</title>
+        <style>
+            body {
+                background-color: rgb(43, 45, 48);
+            }
+        </style>
     </head>
     <body>
         <canvas id="myCanvas" width="300" height="190" style="border: 1px solid #000"></canvas>
-        <canvas id="myCanvas2" width="50" height="50" style="border: 1px solid #000"></canvas>
+        <canvas id="myCanvas2" width="60" height="60" style="border: 1px solid #000"></canvas>
+        <canvas id="myCanvas3" width="60" height="60" style="border: 1px solid #000"></canvas>
+        <canvas id="myCanvas4" width="60" height="60" style="border: 1px solid #000"></canvas>
         <script>
             const canvas = document.getElementById('myCanvas')
             const ctx = canvas.getContext('2d')
@@ -15,12 +22,18 @@
             const canvas2 = document.getElementById('myCanvas2')
             const ctx2 = canvas2.getContext('2d')
 
+            const canvas3 = document.getElementById('myCanvas3')
+            const ctx3 = canvas3.getContext('2d')
+
+            const canvas4 = document.getElementById('myCanvas4')
+            const ctx4 = canvas4.getContext('2d')
+
             const image = new Image()
             image.src = './demo1.png'
 
             image.onload = () => {
                 const svgPath = new Path2D(
-                    'M4 24V12H13V10C13 6.68629 15.6863 4 19 4C22.3137 4 25 6.68629 25 10V12H34V24H38C41.3137 24 44 26.6863 44 30C44 33.3137 41.3137 36 38 36H34V44H4V36H8C11.3137 36 14 33.3137 14 30C14 26.6863 11.3137 24 8 24H4Z'
+                    'M5 30V15H16.25V12.5C16.25 8.35786 19.6079 5 23.75 5C27.8921 5 31.25 8.35786 31.25 12.5V15H42.5V30H47.5C51.6421 30 55 33.3579 55 37.5C55 41.6421 51.6421 45 47.5 45H42.5V55H5V45H10C14.1421 45 17.5 41.6421 17.5 37.5C17.5 33.3579 14.1421 30 10 30H5Z'
                 )
 
                 // 随机生成位置
@@ -31,12 +44,39 @@
                 ctx.drawImage(image, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height)
                 ctx.translate(x, y)
                 ctx.clip(svgPath)
-                ctx.clearRect(0, 0, canvas.width, canvas.height)
 
                 // 绘制拼图
                 ctx2.clip(svgPath)
                 ctx2.clearRect(0, 0, canvas.width, canvas.height)
                 ctx2.drawImage(image, x, y, canvas.width - x, canvas.height - y, 0, 0, canvas.width - x, canvas.height - y) // 裁剪位置、绘制位置
+
+                // 绘制阴影
+                ctx3.shadowBlur = 20 // 阴影的模糊程度
+                ctx3.shadowColor = 'rgba(0, 0, 0, 0.5)' // 阴影的颜色
+                ctx3.strokeStyle = 'rgba(0, 0, 0, 0)' // Stroke color
+                ctx3.lineWidth = 2 // Stroke width
+                ctx3.stroke(svgPath)
+                ctx3.drawImage(canvas2, 0, 0)
+
+                // 绘制内阴影颜色
+                // ctx4.save()
+                // ctx4.globalCompositeOperation = 'source-out'
+                // ctx4.shadowBlur = 20
+                // ctx4.shadowColor = '#000'
+                // ctx4.fillStyle = '#000'
+                // ctx4.fill(svgPath)
+                // ctx4.restore()
+                // ctx4.strokeStyle = 'rgba(255, 255, 255, 255)'
+                // ctx4.lineWidth = 2
+                // ctx4.stroke(svgPath)
+
+                // 内阴影背景色
+                ctx4.save()
+                ctx4.globalCompositeOperation = 'destination-over'
+                ctx4.fillStyle = 'rgba(255, 255, 255, 0.1)'
+                ctx4.fill(svgPath)
+                ctx4.restore()
+                ctx.drawImage(canvas4, 0, 0)
             }
         </script>
     </body>

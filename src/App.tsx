@@ -41,18 +41,29 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
     const [uuid, setUUID] = useState('')
     const [code, setCode] = useState(0)
     const sliderLeftRef = useRef(sliderLeft)
+    const [animationKey, setAnimationKey] = useState(10000)
+    const [animationKey2, setAnimationKey2] = useState(20000)
+    const [animationKey3, setAnimationKey3] = useState(30000)
+
+    const fetchData = async () => {
+        const res = await IGetCaptcha()
+        setBackground(res.background)
+        setShape(res.shape)
+        setSliderTop(res.y)
+        setUUID(res.uuid)
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            const res = await IGetCaptcha()
-            setBackground(res.background)
-            setShape(res.shape)
-            setSliderTop(res.y)
-            setUUID(res.uuid)
-        }
-
         fetchData()
     }, [])
+
+    // 刷新验证码
+    const onRefresh = () => {
+        setAnimationKey(animationKey + 1)
+        setAnimationKey2(animationKey2 + 1)
+        setAnimationKey3(animationKey3 + 1)
+        fetchData()
+    }
 
     // 图形校验
     const validateCaptcha = async () => {
@@ -104,10 +115,14 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
     return (
         <>
             <div className={`code-card ${modelClass}`} onClick={(e) => e.stopPropagation()}>
-                {showModel && <h3 className="animate__animated animate__fadeIn">请拖动滑块完成拼图</h3>}
+                {showModel && (
+                    <h3 className="animate__animated animate__fadeIn" key={animationKey}>
+                        请拖动滑块完成拼图
+                    </h3>
+                )}
 
                 {showModel && (
-                    <div className="card__image animate__slideInZoom">
+                    <div className="card__image animate__slideInZoom" key={animationKey2}>
                         {code === 200 ? <SuccessTip second={second} /> : ''}
                         {code === 401 ? <FailTip /> : ''}
                         {background ? <img src={background} alt="" /> : ''}
@@ -116,7 +131,7 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
                 )}
 
                 {showModel && (
-                    <div className="card__process animate__slideInZoom">
+                    <div className="card__process animate__slideInZoom" key={animationKey3}>
                         <div className="process__bar"></div>
 
                         <div className="process__slider" style={{ transform: `translateX(${sliderLeft}px)` }} onMouseDown={onMouseDown}>
@@ -127,9 +142,9 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
 
                 {showModel && (
                     <footer>
-                        <img src={iconClose} alt="" />
+                        <img src={iconClose} alt="" onClick={() => onClose()} />
 
-                        <img src={iconRefresh} alt="" style={{ marginLeft: '15px' }} />
+                        <img src={iconRefresh} alt="" style={{ marginLeft: '15px' }} onClick={() => onRefresh()} />
 
                         <p />
 
