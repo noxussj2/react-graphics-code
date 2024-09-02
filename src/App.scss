@@ -94,14 +94,15 @@
     display: flex;
     flex-direction: column;
     border-radius: 6px;
-    animation-fill-mode: forwards;
     overflow: hidden;
+    animation-fill-mode: forwards;
 
     h3 {
         color: #fff;
         font-size: 18px;
         line-height: 18px;
         text-align: center;
+        animation-fill-mode: forwards;
     }
 
     .card__image {
@@ -112,6 +113,7 @@
         border-radius: 6px;
         overflow: hidden;
         background-color: #fff;
+        animation-fill-mode: forwards;
 
         img {
             width: 100%;
@@ -133,6 +135,7 @@
         height: 80px;
         display: flex;
         align-items: center;
+        animation-fill-mode: forwards;
 
         .process__bar {
             width: 100%;

@@ -44,6 +44,7 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
     const [animationKey, setAnimationKey] = useState(10000)
     const [animationKey2, setAnimationKey2] = useState(20000)
     const [animationKey3, setAnimationKey3] = useState(30000)
+    const [outClassName, setOutClassName] = useState('')
 
     const fetchData = async () => {
         const res = await IGetCaptcha()
@@ -59,10 +60,15 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
 
     // 刷新验证码
     const onRefresh = () => {
-        setAnimationKey(animationKey + 1)
-        setAnimationKey2(animationKey2 + 1)
-        setAnimationKey3(animationKey3 + 1)
-        fetchData()
+        setOutClassName('animate__fadeOutLeft')
+
+        setTimeout(() => {
+            setOutClassName('')
+            setAnimationKey(animationKey + 1)
+            setAnimationKey2(animationKey2 + 1)
+            setAnimationKey3(animationKey3 + 1)
+            fetchData()
+        }, 800)
     }
 
     // 图形校验
@@ -116,13 +122,13 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
         <>
             <div className={`code-card ${modelClass}`} onClick={(e) => e.stopPropagation()}>
                 {showModel && (
-                    <h3 className="animate__animated animate__fadeIn" key={animationKey}>
+                    <h3 className={`animate__animated animate__fadeIn ${outClassName}`} key={animationKey}>
                         请拖动滑块完成拼图
                     </h3>
                 )}
 
                 {showModel && (
-                    <div className="card__image animate__slideInZoom" key={animationKey2}>
+                    <div className={`card__image animate__slideInZoom ${outClassName}`} key={animationKey2}>
                         {code === 200 ? <SuccessTip second={second} /> : ''}
                         {code === 401 ? <FailTip /> : ''}
                         {background ? <img src={background} alt="" /> : ''}
@@ -131,7 +137,7 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
                 )}
 
                 {showModel && (
-                    <div className="card__process animate__slideInZoom" key={animationKey3}>
+                    <div className={`card__process animate__slideInZoom ${outClassName}`} key={animationKey3}>
                         <div className="process__bar"></div>
 
                         <div className="process__slider" style={{ transform: `translateX(${sliderLeft}px)` }} onMouseDown={onMouseDown}>
