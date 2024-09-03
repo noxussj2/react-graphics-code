@@ -1,10 +1,33 @@
-import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
-import './styles/reset.scss'
-import './index.css'
-import 'animate.css'
-import { ISetToken } from './api/csrf'
+import ReactDOM from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 
-ISetToken()
+if (import.meta.env.MODE === 'development') {
+    createRoot(document.getElementById('root')!).render(<App />)
+}
 
-createRoot(document.getElementById('root')!).render(<App />)
+if (import.meta.env.MODE === 'production') {
+    class CaptchaButtonWC extends HTMLElement {
+        async connectedCallback() {
+            // 创建 Shadow DOM
+            const shadowRoot = this.attachShadow({ mode: 'open' })
+
+            // 创建样式元素
+            const cssUrl = '/index.css' // 替换为实际的 CSS 文件路径
+            const response = await fetch(cssUrl)
+            const cssText = await response.text()
+            const styleElement = document.createElement('style')
+            styleElement.textContent = cssText
+            shadowRoot.appendChild(styleElement)
+
+            // 挂载 React 组件
+            const mountPoint = document.createElement('div')
+            shadowRoot.appendChild(mountPoint)
+            const root = ReactDOM.createRoot(mountPoint)
+            root.render(<App />)
+        }
+    }
+
+    // 注册自定义元素
+    customElements.define('captcha-button', CaptchaButtonWC)
+}

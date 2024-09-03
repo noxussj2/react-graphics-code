@@ -1,4 +1,7 @@
 import './App.scss'
+import './styles/reset.scss'
+import './index.css'
+import 'animate.css'
 import { useState, useEffect, useRef } from 'react'
 import iconArrow from './assets/icon-arrow.png'
 import iconClose from './assets/icon-close.png'
@@ -6,6 +9,8 @@ import iconRefresh from './assets/icon-refresh.png'
 import iconLogo from './assets/icon-logo.png'
 import logo from './assets/logo.png'
 import { IGetCaptcha, IValidateCaptcha } from './api'
+import { ISetToken } from './api/csrf'
+ISetToken()
 
 /**
  * 验证成功

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getCookie } from '..//utils/cookie'
+import { url as _url } from 'config/api'
 
 /**
  * 请求拦截器
@@ -22,15 +22,17 @@ const request = (method: string, option: any, fn: Function = (x: any) => x) => {
     return new Promise((resolve) => {
         if (option.url) {
             if (typeof window !== 'undefined') {
+                option.param = option.param || {}
+
                 axios({
                     method: method,
-                    url: option.url,
+                    url: _url + option.url,
                     params: method === 'get' ? option.param : {},
                     data: method === 'post' ? option.param : {},
                     headers: {
                         ...{
                             'Content-Type': 'application/x-www-form-urlencoded',
-                            'x-csrf-token': getCookie('csrfToken')
+                            'x-csrf-token': localStorage.getItem('csrfToken') || ''
                         },
                         ...(option.headers || {})
                     },
