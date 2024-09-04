@@ -23,12 +23,12 @@ function SuccessTip({ second }: any) {
 }
 
 /**
- * 验证是哎
+ * 验证失败
  */
-function FailTip() {
+function FailTip({ match }: any) {
     return (
         <div className="fail-tip">
-            <span>验证失败！请重新验证</span>
+            <span> 验证失败！还差{match}像素到达终点</span>
         </div>
     )
 }
@@ -41,7 +41,8 @@ function Puzzle({ onClose, showModel, modelClass, onSuccess, onFail }: any) {
     const [background, setBackground] = useState('')
     const [sliderLeft, setSliderLeft] = useState(0)
     const [sliderTop, setSliderTop] = useState(0)
-    const [second, setSecond] = useState(1)
+    const [second, setSecond] = useState(0)
+    const [match, setMatch] = useState(0)
     const [uuid, setUUID] = useState('')
     const [code, setCode] = useState(0)
     const sliderLeftRef = useRef(sliderLeft)
@@ -83,6 +84,7 @@ function Puzzle({ onClose, showModel, modelClass, onSuccess, onFail }: any) {
         if (res.code === 401) {
             onFail && onFail()
             setSliderLeft(0)
+            setMatch(res.data.match)
         }
 
         if (res.code === 200) {
@@ -134,7 +136,7 @@ function Puzzle({ onClose, showModel, modelClass, onSuccess, onFail }: any) {
                 {showModel && (
                     <div className={`card__image animate__animated animate__slideInZoom ${outClassName}`} key={animationKey2}>
                         {code === 200 ? <SuccessTip second={second} /> : ''}
-                        {code === 401 ? <FailTip /> : ''}
+                        {code === 401 ? <FailTip match={match} /> : ''}
                         {background ? <img src={background} alt="" /> : ''}
                         {shape ? <img src={shape} alt="" className="image__shape" style={{ top: `${sliderTop}px`, transform: `translateX(${sliderLeft}px)` }} /> : ''}
                     </div>
