@@ -1620,6 +1620,11 @@ varint@^6.0.0:
   resolved "https://registry.npmmirror.com/varint/-/varint-6.0.0.tgz#9881eb0ce8feaea6512439d19ddf84bf551661d0"
   integrity sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==
 
+vite-plugin-assets@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmmirror.com/vite-plugin-assets/-/vite-plugin-assets-0.2.0.tgz#ab946f597fde2c6e570ff7278704f4af1f5f1acf"
+  integrity sha512-7zYsWnXkDZdxVi5rT1g7DyBYCivzgndsDeBDiybZIjkaqlm57yAie1b5ukZND8rNcJHMwbJaBgJ1ialX1rcXzA==
+
 vite-plugin-css-injected-by-js@^3.5.1:
   version "3.5.1"
   resolved "https://registry.npmmirror.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-3.5.1.tgz#b9c568c21b131d08e31aa6d368ee39c9d6c1b6c1"

@@ -1,7 +1,6 @@
-import './App.scss'
-import './styles/reset.scss'
-import './index.css'
 import 'animate.css'
+import './styles/base.scss'
+import './styles/puzzle-captcha-button.scss'
 import { useState, useEffect, useRef } from 'react'
 import iconArrow from './assets/icon-arrow.png'
 import iconClose from './assets/icon-close.png'
@@ -37,7 +36,7 @@ function FailTip() {
 /**
  * 请拖动滑块完成拼图
  */
-function Puzzle({ onClose, showModel, modelClass }: any) {
+function Puzzle({ onClose, showModel, modelClass, onSuccess, onFail }: any) {
     const [shape, setShape] = useState('')
     const [background, setBackground] = useState('')
     const [sliderLeft, setSliderLeft] = useState(0)
@@ -82,11 +81,13 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
         setCode(res.code)
 
         if (res.code === 401) {
+            onFail && onFail()
             setSliderLeft(0)
         }
 
         if (res.code === 200) {
             setTimeout(() => {
+                onSuccess && onSuccess()
                 onClose()
             }, 2000)
         }
@@ -97,7 +98,6 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
         e.preventDefault()
         const clientX = e.clientX
         const start = new Date().getTime()
-        console.log(start)
 
         const handleMouseMove = (e: MouseEvent) => {
             // Calculate the distance of the mouse moving
@@ -111,7 +111,6 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
         }
 
         const handleMouseUp = (e: any) => {
-            console.log(new Date().getTime())
             setSecond((new Date().getTime() - start) / 1000)
             window.removeEventListener('mousemove', handleMouseMove)
             window.removeEventListener('mouseup', handleMouseUp)
@@ -133,7 +132,7 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
                 )}
 
                 {showModel && (
-                    <div className={`card__image animate__slideInZoom ${outClassName}`} key={animationKey2}>
+                    <div className={`card__image animate__animated animate__slideInZoom ${outClassName}`} key={animationKey2}>
                         {code === 200 ? <SuccessTip second={second} /> : ''}
                         {code === 401 ? <FailTip /> : ''}
                         {background ? <img src={background} alt="" /> : ''}
@@ -142,7 +141,7 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
                 )}
 
                 {showModel && (
-                    <div className={`card__process animate__slideInZoom ${outClassName}`} key={animationKey3}>
+                    <div className={`card__process animate__animated animate__slideInZoom ${outClassName}`} key={animationKey3}>
                         <div className="process__bar"></div>
 
                         <div className="process__slider" style={{ transform: `translateX(${sliderLeft}px)` }} onMouseDown={onMouseDown}>
@@ -170,7 +169,7 @@ function Puzzle({ onClose, showModel, modelClass }: any) {
 /**
  * 点击按钮开始验证
  */
-function ValidateButton() {
+function PuzzleCaptchaButton({ onSuccess, onFail }: any) {
     const [show, setShow] = useState(false)
     const [showModel, setShowModel] = useState(false)
     const [modelClass, setModelClass] = useState('')
@@ -195,7 +194,7 @@ function ValidateButton() {
 
     return (
         <>
-            <div className="validate-button--wrap">
+            <div className="puzzle-captcha-button">
                 <div className="validate-button" onClick={openModal}>
                     <figure />
 
@@ -207,7 +206,7 @@ function ValidateButton() {
                 {show && (
                     <>
                         <div className="puzzle-popup" onClick={closeModal} />
-                        <Puzzle onClose={closeModal} showModel={showModel} modelClass={modelClass} />
+                        <Puzzle onClose={closeModal} showModel={showModel} modelClass={modelClass} onSuccess={onSuccess} onFail={onFail} />
                     </>
                 )}
             </div>
@@ -215,4 +214,4 @@ function ValidateButton() {
     )
 }
 
-export default ValidateButton
+export default PuzzleCaptchaButton

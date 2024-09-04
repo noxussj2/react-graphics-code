@@ -5,7 +5,7 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react()],
+    base: './',
     server: {
         port: 12005,
         proxy: {
@@ -23,16 +23,18 @@ export default defineConfig({
         }
     },
     build: {
+        assetsInlineLimit: 1024 * 1024,
         rollupOptions: {
             output: {
-                entryFileNames: 'main.js',
+                entryFileNames: 'puzzle-captcha-button.js',
                 assetFileNames: (assetInfo) => {
                     if (assetInfo.name === 'style.css') {
-                        return 'style.css' // 生产模式下的样式文件名
+                        return 'puzzle-captcha-button.css' // 生产模式下的样式文件名
                     }
                     return assetInfo.name // 其他文件保持原名
                 }
             }
         }
-    }
+    },
+    plugins: [react()]
 })

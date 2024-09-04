@@ -8,6 +8,16 @@ if (import.meta.env.MODE === 'development') {
 
 if (import.meta.env.MODE === 'production') {
     class CaptchaButtonWC extends HTMLElement {
+        onSuccess = () => {
+            const event = new CustomEvent('success', {})
+            this.dispatchEvent(event)
+        }
+
+        onFail = () => {
+            const event = new CustomEvent('fail', {})
+            this.dispatchEvent(event)
+        }
+
         async connectedCallback() {
             // 创建 Shadow DOM
             const shadowRoot = this.attachShadow({ mode: 'open' })
@@ -19,10 +29,8 @@ if (import.meta.env.MODE === 'production') {
             shadowRoot.appendChild(styleElement)
 
             // 挂载 React 组件
-            const mountPoint = document.createElement('div')
-            shadowRoot.appendChild(mountPoint)
-            const root = ReactDOM.createRoot(mountPoint)
-            root.render(<App />)
+            const root = ReactDOM.createRoot(shadowRoot)
+            root.render(<App onSuccess={this.onSuccess} onFail={this.onFail} />)
         }
     }
 
