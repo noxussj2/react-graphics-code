@@ -28,7 +28,7 @@ export default defineConfig({
             output: {
                 entryFileNames: 'puzzle-captcha-button.js',
                 assetFileNames: (assetInfo) => {
-                    if (assetInfo.name === 'style.css') {
+                    if (assetInfo.name === 'index.css') {
                         return 'puzzle-captcha-button.css' // 生产模式下的样式文件名
                     }
                     return assetInfo.name // 其他文件保持原名

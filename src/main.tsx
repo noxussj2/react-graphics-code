@@ -7,7 +7,7 @@ if (import.meta.env.MODE === 'development') {
 }
 
 if (import.meta.env.MODE === 'production') {
-    class CaptchaButtonWC extends HTMLElement {
+    class PuzzleCaptchaButtonWC extends HTMLElement {
         onSuccess = () => {
             const event = new CustomEvent('success', {})
             this.dispatchEvent(event)
@@ -25,7 +25,7 @@ if (import.meta.env.MODE === 'production') {
             // 创建样式元素
             const styleElement = document.createElement('link')
             styleElement.rel = 'stylesheet'
-            styleElement.href = './index.css' // 替换为实际的 CSS 文件路径
+            styleElement.href = './puzzle-captcha-button.css' // 替换为实际的 CSS 文件路径
             shadowRoot.appendChild(styleElement)
 
             // 挂载 React 组件
@@ -35,5 +35,5 @@ if (import.meta.env.MODE === 'production') {
     }
 
     // 注册自定义元素
-    customElements.define('captcha-button', CaptchaButtonWC)
+    customElements.define('puzzle-captcha-button', PuzzleCaptchaButtonWC)
 }
