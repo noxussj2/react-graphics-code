@@ -30,7 +30,9 @@ if (import.meta.env.MODE === 'production') {
 
             // 挂载 React 组件
             const root = ReactDOM.createRoot(shadowRoot)
-            root.render(<App onSuccess={this.onSuccess} onFail={this.onFail} />)
+            console.log(123)
+
+            root.render(<App onSuccess={this.onSuccess} onFail={this.onFail} onApi={this.api} />)
         }
     }
 

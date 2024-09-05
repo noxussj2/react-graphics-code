@@ -36,7 +36,7 @@ function FailTip({ match }: any) {
 /**
  * 请拖动滑块完成拼图
  */
-function Puzzle({ onClose, showModel, modelClass, onSuccess, onFail }: any) {
+function Puzzle({ onClose, showModel, modelClass, onSuccess, onFail, onApi }: any) {
     const [shape, setShape] = useState('')
     const [background, setBackground] = useState('')
     const [sliderLeft, setSliderLeft] = useState(0)
@@ -78,7 +78,14 @@ function Puzzle({ onClose, showModel, modelClass, onSuccess, onFail }: any) {
 
     // 图形校验
     const validateCaptcha = async () => {
-        const res = await IValidateCaptcha({ uuid, x: sliderLeftRef.current + 20 })
+        let res = null
+
+        if (onApi) {
+            res = await onApi({ uuid, x: sliderLeftRef.current + 20 })
+        } else {
+            res = await IValidateCaptcha({ uuid, x: sliderLeftRef.current + 20 })
+        }
+
         setCode(res.code)
 
         if (res.code === 401) {
@@ -171,7 +178,7 @@ function Puzzle({ onClose, showModel, modelClass, onSuccess, onFail }: any) {
 /**
  * 点击按钮开始验证
  */
-function PuzzleCaptchaButton({ onSuccess, onFail }: any) {
+function PuzzleCaptchaButton({ onSuccess, onFail, onApi }: any) {
     const [show, setShow] = useState(false)
     const [showModel, setShowModel] = useState(false)
     const [modelClass, setModelClass] = useState('')
@@ -208,7 +215,7 @@ function PuzzleCaptchaButton({ onSuccess, onFail }: any) {
                 {show && (
                     <>
                         <div className="puzzle-popup" onClick={closeModal} />
-                        <Puzzle onClose={closeModal} showModel={showModel} modelClass={modelClass} onSuccess={onSuccess} onFail={onFail} />
+                        <Puzzle onClose={closeModal} showModel={showModel} modelClass={modelClass} onSuccess={onSuccess} onFail={onFail} onApi={onApi} />
                     </>
                 )}
             </div>
