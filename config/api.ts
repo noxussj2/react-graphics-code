@@ -1,1 +1,1 @@
-export const url = 'http://noxussj.top:2033'
+export const url = 'https://note.noxussj.top'
